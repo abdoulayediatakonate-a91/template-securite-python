@@ -1,3 +1,5 @@
+from scapy.utils import rdpcap
+
 from src.tp1.utils.lib import choose_interface
 from tp1.utils.config import logger
 
@@ -11,6 +13,9 @@ class Capture:
         """
         Capture network traffic from an interface
         """
+        paquets = rdpcap(r"C:\Users\abdou\Downloads\capture.pcap")
+        self.packets = paquets
+
         interface = self.interface
         logger.info(f"Capture traffic from interface {interface}")
 
