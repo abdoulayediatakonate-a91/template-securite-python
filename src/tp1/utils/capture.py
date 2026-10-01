@@ -1,18 +1,27 @@
 from src.tp1.utils.lib import choose_interface
 from tp1.utils.config import logger
-
+from scapy.all import rdpcap
 
 class Capture:
-    def __init__(self) -> None:
-        self.interface = choose_interface()
+    def __init__(self, pcap_path: str) -> None:
+        #chemin du pcap
+        self.pcap_path = pcap_path
+        # la liste pour compter les paquets
+        self.packets: list = []
+        #dico qui contient protocole et nombre (str pour les protocoles et int pour les entiers)
+        self.protocols: dict[str, int] = {}
+        self.attacks: list[dict[str, str]] = []
+        self.flag = ""
         self.summary = ""
 
+        logger.info("Capture créée pour %s", pcap_path)
+
     def capture_traffic(self) -> None:
-        """
-        Capture network traffic from an interface
-        """
-        interface = self.interface
-        logger.info(f"Capture traffic from interface {interface}")
+        #Lit le PCAP et récupère les paquets. """
+        logger.info("Lecture du fichier PCAP : %s", self.pcap_path)
+        # rdpcap lit  le fichier et renvoie les paquets
+        self.packets = rdpcap(self.pcap_path)
+        logger.info("Nombre de paquets : %s", len(self.packets))
 
     def sort_network_protocols(self) -> str:
         """
