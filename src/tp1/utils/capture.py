@@ -15,7 +15,6 @@ class Capture:
         """
         paquets = rdpcap(r"C:\Users\abdou\Downloads\capture.pcap")
         self.packets = paquets
-
         interface = self.interface
         logger.info(f"Capture traffic from interface {interface}")
 
