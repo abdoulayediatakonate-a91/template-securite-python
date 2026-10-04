@@ -18,10 +18,10 @@ class Capture:
 
     def capture_traffic(self) -> None:
         #Lit le PCAP et récupère les paquets. """
-        logger.info("Lecture du fichier PCAP : %s", self.pcap_path)
+        logger.info("Lecture du fichier pcap : %s", self.pcap_path)
         # rdpcap lit  le fichier et renvoie les paquets
         self.packets = rdpcap(self.pcap_path)
-        logger.info("Nombre de paquets : %s", len(self.packets))
+        logger.info("Le Nombre de paquets : %s", len(self.packets))
 
     def sort_network_protocols(self) -> str:
         """
