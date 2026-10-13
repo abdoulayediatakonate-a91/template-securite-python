@@ -1,6 +1,8 @@
 import math
 from collections import Counter
 
+from pwnlib.filepointer import size
+
 
 class Sample:
     def __init__(self, path: str) -> None:
@@ -9,7 +11,9 @@ class Sample:
 
     def get_file_metadata(self) -> dict:
         """sha256, md5, taille, type de fichier, entropie de Shannon."""
-        raise NotImplementedError
+        i = len(self.data)
+        taille = {"size" : i}
+        return taille
 
     def shannon_entropy(self) -> float:
         if not self.data:
