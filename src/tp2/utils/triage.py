@@ -15,11 +15,11 @@ class Triage:
         sample = Sample(self.path)
         logger.info(f"Triage de {self.path} ({len(sample.data)} octets)")
 
-        # meta = sample.get_file_metadata()
+        meta = sample.get_file_metadata()
         # iocs = sample.extract_iocs()
         # bininfo = sample.parse_binary()
         # matches = self.scanner.scan(sample.data)
         # summary = json.dumps({"meta": meta, "iocs": iocs, "yara": matches, "bin": bininfo})
         # verdict = self.llm.triage(summary)
 
-        return {}
+        return meta
