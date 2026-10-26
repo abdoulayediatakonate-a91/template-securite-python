@@ -2,6 +2,7 @@ import math
 import magic
 from collections import Counter
 import hashlib
+import re
 
 class Sample:
     def __init__(self, path: str) -> None:
