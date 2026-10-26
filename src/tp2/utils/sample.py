@@ -84,22 +84,55 @@ class Sample:
             if hote:
                 hotes_candidates.append(hote)
 
+        motif_domaine = (
+            r"(?:[A-Za-z0-9](?:[A-Za-z0-9-]{0,61}[A-Za-z0-9])?\.)+"
+            r"[A-Za-z]{2,63}"
+        )
+
         domaines = []
 
         for hote in hotes_candidates:
             try:
                 ipaddress.ip_address(hote)
             except ValueError:
-                domaines.append(hote)
+                    if len(hote) <= 253 and re.fullmatch(motif_domaine, hote):
+                        domaines.append(hote)
 
         domaines = sorted(set(domaines))
+
+        mutex_candidates = []
+
+        for texte in chaines_texte:
+            trouvees = re.findall(
+                r"(?<![A-Za-z0-9_])(?:Global|Local)\\[A-Za-z0-9_.-]+",
+                texte,
+            )
+            mutex_candidates.extend(trouvees)
+
+        mutex = sorted(set(mutex_candidates))
+
+        registry_candidates = []
+
+        for texte in chaines_texte:
+            trouvees = re.findall(
+                r"(?<![A-Za-z0-9_])"
+                r"(?:HKCU|HKLM|HKCR|HKU|HKCC|"
+                r"HKEY_CURRENT_USER|HKEY_LOCAL_MACHINE|"
+                r"HKEY_CLASSES_ROOT|HKEY_USERS|HKEY_CURRENT_CONFIG)"
+                r"\\[^\s\"'<>]+",
+                texte,
+                flags=re.IGNORECASE,
+            )
+            registry_candidates.extend(trouvees)
+
+        registry = sorted(set(registry_candidates))
 
         return {
             "domains": domaines,
             "ips": ips_valides,
             "urls": urls_valides,
-            "mutex": [],
-            "registry": [],
+            "mutex": mutex,
+            "registry": registry,
         }
     def parse_binary(self) -> dict:
         """imports / sections via lief (si PE/ELF)."""
