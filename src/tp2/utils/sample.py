@@ -1,11 +1,10 @@
 import math
 from base64 import decode
-
 import magic
 from collections import Counter
 import hashlib
 import re
-
+import ipaddress
 
 class Sample:
     def __init__(self, path: str) -> None:
@@ -45,7 +44,15 @@ class Sample:
                 r"\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}",
                 texte
             )
-        ips_candidates.extend(trouvees)
+            ips_candidates.extend(trouvees)
+        ips_valides = []
+
+        for candidate in ips_candidates:
+            try:
+                adresse = ipaddress.IPv4Address(candidate)
+            except ipaddress.AddressValueError:
+                continue
+            ips_valides.append(str(adresse))
         raise NotImplementedError
 
     def parse_binary(self) -> dict:
