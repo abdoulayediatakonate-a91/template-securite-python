@@ -46,13 +46,14 @@ class Sample:
             )
             ips_candidates.extend(trouvees)
         ips_valides = []
-        ips_valides = sorted(set(ips_valides))
+
         for candidate in ips_candidates:
             try:
                 adresse = ipaddress.IPv4Address(candidate)
             except ipaddress.AddressValueError:
                 continue
             ips_valides.append(str(adresse))
+        ips_valides = sorted(set(ips_valides))
         return {
             "domains": [],
             "ips": ips_valides,
