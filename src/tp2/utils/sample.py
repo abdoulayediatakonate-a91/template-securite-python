@@ -79,7 +79,7 @@ class Sample:
         return {
             "domains": [],
             "ips": ips_valides,
-            "urls": [],
+            "urls": urls_valides,
             "mutex": [],
             "registry": [],
         }
