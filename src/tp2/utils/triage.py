@@ -5,10 +5,16 @@ from tp2.utils.scanner import YaraScanner
 
 
 class Triage:
-    def __init__(self, path: str, backend: str) -> None:
+    def __init__(
+            self,
+            path: str,
+            backend: str,
+            rules_path: str = "rules/course_rules.yar",
+    ) -> None:
+
         self.path = path
         self.backend = backend
-        self.scanner = YaraScanner()
+        self.scanner = YaraScanner(rules_path)
         self.llm = LLMTriage(backend)
 
     def run(self) -> dict:

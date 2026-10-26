@@ -18,7 +18,7 @@ def main() -> None:
 
     for chemin in dossier_samples.iterdir():
      if chemin.is_file():
-        triage = Triage(str(chemin), args.llm)
+        triage = Triage(str(chemin), args.llm, args.rules)
         result = triage.run()
 
         report = Report(result)
