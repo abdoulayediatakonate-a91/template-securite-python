@@ -1,4 +1,5 @@
 import math
+import magic
 from collections import Counter
 import hashlib
 
@@ -17,6 +18,8 @@ class Sample:
         metadata["sha256"] = sha256
         md5 = hashlib.md5(self.data).hexdigest()
         metadata["md5"] = md5
+        file_type = magic.from_buffer(self.data)
+        metadata["file_type"] = file_type
         return metadata
 
     def shannon_entropy(self) -> float:
