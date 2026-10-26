@@ -2,6 +2,7 @@ import math
 from base64 import decode
 import magic
 from collections import Counter
+from urllib.parse import urlsplit
 import hashlib
 import re
 import ipaddress
@@ -45,6 +46,7 @@ class Sample:
                 texte
             )
             ips_candidates.extend(trouvees)
+
         ips_valides = []
 
         for candidate in ips_candidates:
@@ -54,6 +56,26 @@ class Sample:
                 continue
             ips_valides.append(str(adresse))
         ips_valides = sorted(set(ips_valides))
+
+        urls_candidates = []
+
+        for texte in chaines_texte:
+            trouvees = re.findall(r"https?://[^\s<>\"']+", texte)
+            urls_candidates.extend(trouvees)
+
+        urls_valides = []
+
+        for candidate in urls_candidates:
+            try:
+                elements = urlsplit(candidate)
+                hote = elements.hostname
+            except ValueError:
+                continue
+
+            if elements.scheme in ("http", "https") and hote:
+                urls_valides.append(candidate)
+
+        urls_valides = sorted(set(urls_valides))
         return {
             "domains": [],
             "ips": ips_valides,
