@@ -76,8 +76,26 @@ class Sample:
                 urls_valides.append(candidate)
 
         urls_valides = sorted(set(urls_valides))
+
+        hotes_candidates = []
+
+        for url in urls_valides:
+            hote = urlsplit(url).hostname
+            if hote:
+                hotes_candidates.append(hote)
+
+        domaines = []
+
+        for hote in hotes_candidates:
+            try:
+                ipaddress.ip_address(hote)
+            except ValueError:
+                domaines.append(hote)
+
+        domaines = sorted(set(domaines))
+
         return {
-            "domains": [],
+            "domains": domaines,
             "ips": ips_valides,
             "urls": urls_valides,
             "mutex": [],
