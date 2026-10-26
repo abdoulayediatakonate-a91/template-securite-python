@@ -39,6 +39,13 @@ class Sample:
         chaines_texte = []
         for chaine in chaines_ascii:
             chaines_texte.append(chaine.decode("utf8"))
+        ips_candidates = []
+        for texte in chaines_texte:
+            trouvees = re.findall(
+                r"\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}",
+                texte
+            )
+        ips_candidates.extend(trouvees)
         raise NotImplementedError
 
     def parse_binary(self) -> dict:
