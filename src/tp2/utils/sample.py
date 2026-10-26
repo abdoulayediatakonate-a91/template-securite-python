@@ -1,6 +1,6 @@
 import math
 from collections import Counter
-import math
+import hashlib
 
 class Sample:
     def __init__(self, path: str) -> None:
@@ -13,6 +13,10 @@ class Sample:
         metadata = {"size" : i}
         entropie =  self.shannon_entropy()
         metadata["entropy"] = entropie
+        sha256 = hashlib.sha256(self.data).hexdigest()
+        metadata["sha256"] = sha256
+        md5 = hashlib.md5(self.data).hexdigest()
+        metadata["md5"] = md5
         return metadata
 
     def shannon_entropy(self) -> float:
