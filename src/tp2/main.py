@@ -22,8 +22,8 @@ def main() -> None:
         result = triage.run()
 
         report = Report(result)
-        report.generate_pdf(f"{args.file}.triage.pdf")
-        report.generate_json(f"{args.file}.triage.json")
+        chemin_json = dossier_sortie / f"{chemin.name}.triage.json"
+        report.generate_json(str(chemin_json))
 
 
 if __name__ == "__main__":

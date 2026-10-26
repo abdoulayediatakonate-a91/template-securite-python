@@ -1,3 +1,6 @@
+import json
+
+
 class Report:
     def __init__(self, result: dict) -> None:
         self.result = result
@@ -8,4 +11,6 @@ class Report:
 
     def generate_json(self, out_json: str) -> None:
         """Fichier JSON lisible."""
-        raise NotImplementedError
+        with open(out_json, "w", encoding="utf-8") as fichier:
+            json.dump(self.result, fichier, ensure_ascii=False, indent=4)
+
