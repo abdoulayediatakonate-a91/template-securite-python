@@ -41,20 +41,25 @@ class Sample:
         ips_candidates = []
         for texte in chaines_texte:
             trouvees = re.findall(
-                r"\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}",
+                r"(?<![\d.])\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}(?![\d.])",
                 texte
             )
             ips_candidates.extend(trouvees)
         ips_valides = []
-
+        ips_valides = sorted(set(ips_valides))
         for candidate in ips_candidates:
             try:
                 adresse = ipaddress.IPv4Address(candidate)
             except ipaddress.AddressValueError:
                 continue
             ips_valides.append(str(adresse))
-        raise NotImplementedError
-
+        return {
+            "domains": [],
+            "ips": ips_valides,
+            "urls": [],
+            "mutex": [],
+            "registry": [],
+        }
     def parse_binary(self) -> dict:
         """imports / sections via lief (si PE/ELF)."""
         raise NotImplementedError
