@@ -1,8 +1,11 @@
 import math
+from base64 import decode
+
 import magic
 from collections import Counter
 import hashlib
 import re
+
 
 class Sample:
     def __init__(self, path: str) -> None:
@@ -32,6 +35,10 @@ class Sample:
 
     def extract_iocs(self) -> dict:
         """domaines, ips, urls, mutex, registry (regex sur les strings)."""
+        chaines_ascii = re.findall(rb"[\x20-\x7e]{4,}", self.data)
+        chaines_texte = []
+        for chaine in chaines_ascii:
+            chaines_texte.append(chaine.decode("utf8"))
         raise NotImplementedError
 
     def parse_binary(self) -> dict:
