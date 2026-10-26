@@ -1,4 +1,5 @@
 from pathlib import Path
+import yara
 
 class YaraScanner:
     def __init__(self, rules_path: str = "rules/course_rules.yar") -> None:
@@ -22,4 +23,18 @@ class YaraScanner:
             raise ValueError(
                 f"Aucun fichier de règles YARA trouvé dans : {chemin}"
             )
-        raise NotImplementedError
+
+        chemins_regles = {}
+
+        for numero, fichier in enumerate(fichiers):
+            chemins_regles[f"regles_{numero}"] = str(fichier)
+
+        regles = yara.compile(filepaths=chemins_regles)
+        correspondances = regles.match(data=data, timeout=30)
+
+        noms = []
+
+        for correspondance in correspondances:
+            noms.append(correspondance.rule)
+
+        return sorted(set(noms))
