@@ -23,6 +23,7 @@ class Triage:
 
         meta = sample.get_file_metadata()
         meta["iocs"] = sample.extract_iocs()
+        meta["yara_matches"] = self.scanner.scan(sample.data)
         # bininfo = sample.parse_binary()
         # matches = self.scanner.scan(sample.data)
         # summary = json.dumps({"meta": meta, "iocs": iocs, "yara": matches, "bin": bininfo})
