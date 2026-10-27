@@ -140,6 +140,8 @@ class Sample:
         resultat = {
             "format": None,
             "sections": [],
+            "imports": [],
+            "exports": [],
         }
 
         if not self.data.startswith((b"MZ", b"\x7fELF")):

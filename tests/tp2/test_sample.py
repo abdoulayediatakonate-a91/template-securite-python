@@ -1,9 +1,8 @@
 import pytest
 import hashlib
-
+import sys
 
 from tp2.utils.sample import Sample
-
 
 @pytest.mark.parametrize(
     "contenu, entropie_attendue",
@@ -103,3 +102,27 @@ def test_parse_binary_fichier_texte(tmp_path):
         "format": None,
         "sections": [],
     }
+
+@pytest.mark.skipif(
+    sys.platform != "linux",
+    reason="Ce test utilise l'executable Python ELF de Linux",
+)
+def test_parse_binary_elf():
+    sample = Sample(sys.executable)
+
+    resultat = sample.parse_binary()
+
+    assert resultat["format"] == "ELF"
+    assert resultat["sections"]
+
+    sections_code = [
+        section
+        for section in resultat["sections"]
+        if section["name"] == ".text"
+    ]
+
+    assert sections_code
+    assert sections_code[0]["size"] > 0
+
+    for section in resultat["sections"]:
+        assert 0.0 <= section["entropy"] <= 8.0
