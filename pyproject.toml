@@ -34,3 +34,7 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.poetry.scripts]
 tp2 = "tp2.main:main"
+
+[tool.pytest.ini_options]
+testpaths = ["tests/tp2"]
+pythonpath = ["src"]
