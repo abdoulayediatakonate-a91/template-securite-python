@@ -63,3 +63,33 @@ def test_extract_iocs_urls_et_domaines(tmp_path):
         "https://example.org/test",
     ]
     assert resultat["domains"] == ["example.org"]
+
+def test_extract_iocs_mutex(tmp_path):
+    fichier = tmp_path / "exemple.bin"
+    fichier.write_bytes(
+        rb"Global\MonMutex Local\AutreMutex Global\MonMutex"
+    )
+    sample = Sample(str(fichier))
+
+    resultat = sample.extract_iocs()
+
+    assert resultat["mutex"] == [
+        r"Global\MonMutex",
+        r"Local\AutreMutex",
+    ]
+
+def test_extract_iocs_registry(tmp_path):
+    fichier = tmp_path / "exemple.bin"
+    fichier.write_bytes(
+        rb"HKCU\Software\Demo "
+        rb"HKLM\Software\Autre "
+        rb"HKCU\Software\Demo"
+    )
+    sample = Sample(str(fichier))
+
+    resultat = sample.extract_iocs()
+
+    assert resultat["registry"] == [
+        r"HKCU\Software\Demo",
+        r"HKLM\Software\Autre",
+    ]
