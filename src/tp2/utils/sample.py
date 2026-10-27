@@ -6,6 +6,7 @@ from urllib.parse import urlsplit
 import hashlib
 import re
 import ipaddress
+import lief
 
 class Sample:
     def __init__(self, path: str) -> None:
@@ -136,4 +137,33 @@ class Sample:
         }
     def parse_binary(self) -> dict:
         """imports / sections via lief (si PE/ELF)."""
-        raise NotImplementedError
+        resultat = {
+            "format": None,
+            "sections": [],
+        }
+
+        if not self.data.startswith((b"MZ", b"\x7fELF")):
+            return resultat
+
+        binaire = lief.parse(list(self.data))
+
+        if binaire is None:
+            return resultat
+
+        if isinstance(binaire, lief.PE.Binary):
+            resultat["format"] = "PE"
+        elif isinstance(binaire, lief.ELF.Binary):
+            resultat["format"] = "ELF"
+        else:
+            return resultat
+
+        for section in binaire.sections:
+            resultat["sections"].append(
+                {
+                    "name": section.name,
+                    "size": section.size,
+                    "entropy": section.entropy,
+                }
+            )
+
+        return resultat

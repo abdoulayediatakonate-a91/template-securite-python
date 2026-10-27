@@ -93,3 +93,13 @@ def test_extract_iocs_registry(tmp_path):
         r"HKCU\Software\Demo",
         r"HKLM\Software\Autre",
     ]
+
+def test_parse_binary_fichier_texte(tmp_path):
+    fichier = tmp_path / "texte.txt"
+    fichier.write_bytes(b"Simple fichier texte")
+    sample = Sample(str(fichier))
+
+    assert sample.parse_binary() == {
+        "format": None,
+        "sections": [],
+    }
