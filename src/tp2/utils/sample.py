@@ -168,4 +168,17 @@ class Sample:
                 }
             )
 
+        imports = []
+        for fonction in binaire.imported_functions:
+            if fonction.name:
+                imports.append(fonction.name)
+
+        exports = []
+        for fonction in binaire.exported_functions:
+            if fonction.name:
+                exports.append(fonction.name)
+
+        resultat["imports"] = sorted(set(imports))
+        resultat["exports"] = sorted(set(exports))
+
         return resultat
