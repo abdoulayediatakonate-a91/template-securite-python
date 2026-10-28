@@ -1,5 +1,4 @@
 import math
-from base64 import decode
 import magic
 from collections import Counter
 from urllib.parse import urlsplit
@@ -11,7 +10,8 @@ import lief
 class Sample:
     def __init__(self, path: str) -> None:
         self.path = path
-        self.data = open(path, "rb").read()
+        with open(path, "rb") as fichier:
+            self.data = fichier.read()
 
     def get_file_metadata(self) -> dict:
         """sha256, md5, taille, type de fichier, entropie de Shannon."""
@@ -91,6 +91,15 @@ class Sample:
         )
 
         domaines = []
+
+        for hote in hotes_candidates:
+            try:
+                ipaddress.ip_address(hote)
+            except ValueError:
+                if len(hote) <= 253 and re.fullmatch(motif_domaine, hote):
+                    domaines.append(hote)
+
+        domaines = sorted(set(domaines))
 
         for hote in hotes_candidates:
             try:

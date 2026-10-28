@@ -101,12 +101,10 @@ def test_parse_binary_fichier_texte(tmp_path):
     assert sample.parse_binary() == {
         "format": None,
         "sections": [],
+        "imports": [],
+        "exports": [],
     }
 
-@pytest.mark.skipif(
-    sys.platform != "linux",
-    reason="Ce test utilise l'executable Python ELF de Linux",
-)
 def test_parse_binary_elf():
     sample = Sample(sys.executable)
 
