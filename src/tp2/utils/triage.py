@@ -2,6 +2,7 @@ from tp2.utils.config import logger
 from tp2.utils.llm import LLMTriage
 from tp2.utils.sample import Sample
 from tp2.utils.scanner import YaraScanner
+import json
 
 class Triage:
     def __init__(
@@ -28,6 +29,13 @@ class Triage:
         meta["sections"] = bininfo["sections"]
         meta["binary_format"] = bininfo["format"]
         meta["yara_matches"] = self.scanner.scan(sample.data)
+        summary = json.dumps(meta, ensure_ascii=False)
+        verdict = json.loads(self.llm.triage(summary))
+
+        meta["family_guess"] = verdict["family_guess"]
+        meta["mitre_attack"] = verdict["mitre_attack"]
+        meta["llm_summary"] = verdict["llm_summary"]
+        meta["score"] = verdict["score"]
         # summary = json.dumps({"meta": meta, "iocs": iocs, "yara": matches, "bin": bininfo})
         # verdict = self.llm.triage(summary)
 
