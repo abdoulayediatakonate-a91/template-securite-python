@@ -30,6 +30,10 @@ def test_triage_run(tmp_path):
     assert resultat["imports"] == []
     assert resultat["exports"] == []
     assert resultat["sections"] == []
+    assert resultat["family_guess"] == "indeterminee"
+    assert resultat["mitre_attack"] == []
+    assert resultat["score"] == 3
+    assert "hors ligne" in resultat["llm_summary"]
 
 def test_triage_genere_un_json(tmp_path):
     fichier = tmp_path / "exemple.bin"
