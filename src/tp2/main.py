@@ -24,7 +24,8 @@ def main() -> None:
         report = Report(result)
         chemin_json = dossier_sortie / f"{chemin.name}.triage.json"
         report.generate_json(str(chemin_json))
-
+        chemin_pdf = dossier_sortie / f"{chemin.name}.triage.pdf"
+        report.generate_pdf(str(chemin_pdf))
 
 if __name__ == "__main__":
     main()

@@ -28,3 +28,20 @@ def test_generate_json(tmp_path):
         contenu = json.load(fichier)
 
     assert contenu == resultat
+
+def test_generate_pdf(tmp_path):
+    resultat = {
+        "size": 42,
+        "llm_summary": "Analyse hors ligne de démonstration.",
+        "score": 0,
+        "iocs": {},
+        "yara_matches": [],
+    }
+    destination = tmp_path / "rapport.pdf"
+
+    Report(resultat).generate_pdf(str(destination))
+
+    contenu = destination.read_bytes()
+
+    assert contenu.startswith(b"%PDF-")
+    assert b"%%EOF" in contenu[-1024:]
