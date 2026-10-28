@@ -3,7 +3,6 @@ from tp2.utils.llm import LLMTriage
 from tp2.utils.sample import Sample
 from tp2.utils.scanner import YaraScanner
 
-
 class Triage:
     def __init__(
             self,
