@@ -28,8 +28,6 @@ class Triage:
         meta["sections"] = bininfo["sections"]
         meta["binary_format"] = bininfo["format"]
         meta["yara_matches"] = self.scanner.scan(sample.data)
-        # bininfo = sample.parse_binary()
-        # matches = self.scanner.scan(sample.data)
         # summary = json.dumps({"meta": meta, "iocs": iocs, "yara": matches, "bin": bininfo})
         # verdict = self.llm.triage(summary)
 
